@@ -1,178 +1,130 @@
-import { Navbar } from "@/components/Layout/Navbar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
-import { Scale, User, Shield, CheckCircle } from "lucide-react";
+import { useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Scale, Eye, EyeOff } from 'lucide-react';
 
-const RegisterPage = () => {
+const Register = () => {
+  const [searchParams] = useSearchParams();
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    role: searchParams.get('role')?.toUpperCase() || 'CLIENT'
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const { register } = useAuth();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await register(formData);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-      
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-foreground mb-4">
-              Join{" "}
-              <span className="bg-gradient-primary bg-clip-text text-transparent">
-                LegalEase
-              </span>
-            </h1>
-            <p className="text-xl text-muted-foreground">
-              Create your account and start your legal journey today
-            </p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-6">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <Scale className="h-12 w-12 text-blue-600" />
           </div>
-
-          <div className="grid lg:grid-cols-2 gap-12">
-            {/* Registration Form */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Create Account</CardTitle>
-                <CardDescription>
-                  Fill in your details to create your LegalEase account
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="firstName">First Name</Label>
-                    <Input id="firstName" placeholder="John" />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lastName">Last Name</Label>
-                    <Input id="lastName" placeholder="Doe" />
-                  </div>
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email Address</Label>
-                  <Input id="email" type="email" placeholder="john@example.com" />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number</Label>
-                  <Input id="phone" placeholder="+1 (555) 123-4567" />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <Input id="password" type="password" placeholder="Create a strong password" />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword">Confirm Password</Label>
-                  <Input id="confirmPassword" type="password" placeholder="Confirm your password" />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label>Account Type</Label>
-                  <div className="grid grid-cols-2 gap-4">
-                    <Button variant="outline" className="justify-start">
-                      <User className="w-4 h-4 mr-2" />
-                      Client
-                    </Button>
-                    <Button variant="outline" className="justify-start">
-                      <Scale className="w-4 h-4 mr-2" />
-                      Lawyer
-                    </Button>
-                  </div>
-                </div>
-                
-                <Button className="w-full" size="lg">
-                  Create Account
-                </Button>
-                
-                <div className="text-center text-sm text-muted-foreground">
-                  Already have an account?{" "}
-                  <a href="/login" className="text-primary hover:underline">
-                    Sign in here
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Benefits */}
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Shield className="w-5 h-5 mr-2 text-primary" />
-                    Why Choose LegalEase?
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-success mt-0.5" />
-                    <div>
-                      <h4 className="font-semibold">Verified Lawyers</h4>
-                      <p className="text-sm text-muted-foreground">
-                        All lawyers are thoroughly vetted and licensed
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-success mt-0.5" />
-                    <div>
-                      <h4 className="font-semibold">Secure Platform</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Bank-level security for all your legal documents
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-success mt-0.5" />
-                    <div>
-                      <h4 className="font-semibold">24/7 Support</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Get help whenever you need it
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-success mt-0.5" />
-                    <div>
-                      <h4 className="font-semibold">Transparent Pricing</h4>
-                      <p className="text-sm text-muted-foreground">
-                        No hidden fees or surprises
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Quick Stats</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-primary">500+</div>
-                      <div className="text-sm text-muted-foreground">Verified Lawyers</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-primary">10,000+</div>
-                      <div className="text-sm text-muted-foreground">Happy Clients</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-primary">4.9/5</div>
-                      <div className="text-sm text-muted-foreground">Average Rating</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-primary">24/7</div>
-                      <div className="text-sm text-muted-foreground">Support Available</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+          <h1 className="text-3xl font-bold text-gray-900">Join LegalEase</h1>
+          <p className="text-gray-600">Create your account to get started</p>
         </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Sign Up</CardTitle>
+            <CardDescription>Fill in your details to create an account</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Label htmlFor="name">Full Name</Label>
+                <Input
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  placeholder="Enter your full name"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              
+              <div>
+                <Label htmlFor="password">Password</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    value={formData.password}
+                    onChange={(e) => setFormData({...formData, password: e.target.value})}
+                    placeholder="Create a password"
+                    required
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </Button>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="role">Account Type</Label>
+                <Select value={formData.role} onValueChange={(value) => setFormData({...formData, role: value})}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="CLIENT">Client - Seeking Legal Help</SelectItem>
+                    <SelectItem value="LAWYER">Lawyer - Legal Professional</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? 'Creating Account...' : 'Create Account'}
+              </Button>
+            </form>
+            
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-600">
+                Already have an account?{' '}
+                <Link to="/login" className="text-blue-600 hover:underline">
+                  Sign in
+                </Link>
+              </p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
 };
 
-export default RegisterPage; 
+export default Register;

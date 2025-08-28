@@ -7,6 +7,8 @@ public final class SecurityConstants {
     public static final String[] PUBLIC_ENDPOINTS = {
         "/api/auth/**",
         "/api/public/**",
+        "/api/lawyers",
+        "/api/lawyers/**",
         "/swagger-ui/**",
         "/v3/api-docs/**",
         "/actuator/health"

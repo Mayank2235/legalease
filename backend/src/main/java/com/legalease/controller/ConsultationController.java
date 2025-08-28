@@ -22,10 +22,7 @@ public class ConsultationController {
     
     @PostMapping
     public ResponseEntity<Consultation> createConsultation(@Valid @RequestBody ConsultationRequest request) {
-        // In a real app, you'd get the client ID from the authentication context
-        UUID clientId = UUID.randomUUID(); // This should come from the authenticated user
-        
-        Consultation consultation = consultationService.createConsultation(clientId, request);
+        Consultation consultation = consultationService.createConsultation(request.getClientId(), request);
         return ResponseEntity.ok(consultation);
     }
     
@@ -48,6 +45,7 @@ public class ConsultationController {
         return ResponseEntity.ok(consultation);
     }
 }
+
 
 
 

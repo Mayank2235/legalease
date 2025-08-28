@@ -22,8 +22,10 @@ public class LawyerController {
     private final LawyerService lawyerService;
     
     @GetMapping
-    public ResponseEntity<List<Lawyer>> getAllLawyers() {
-        List<Lawyer> lawyers = lawyerService.getAllLawyers();
+    public ResponseEntity<List<Lawyer>> getAllLawyers(@RequestParam(value = "q", required = false) String q) {
+        List<Lawyer> lawyers = (q == null || q.isBlank())
+                ? lawyerService.getAllLawyers()
+                : lawyerService.searchLawyers(q);
         return ResponseEntity.ok(lawyers);
     }
     
@@ -58,6 +60,7 @@ public class LawyerController {
         return ResponseEntity.ok(lawyer);
     }
 }
+
 
 
 

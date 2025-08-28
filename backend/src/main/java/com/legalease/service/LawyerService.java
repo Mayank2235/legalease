@@ -23,6 +23,19 @@ public class LawyerService {
     public List<Lawyer> getAllLawyers() {
         return lawyerRepository.findAll();
     }
+
+    public List<Lawyer> searchLawyers(String q) {
+        if (q == null || q.isBlank()) {
+            return getAllLawyers();
+        }
+        List<Lawyer> bySpec = lawyerRepository.findBySpecializationContainingIgnoreCase(q);
+        List<Lawyer> byName = lawyerRepository.findByUser_NameContainingIgnoreCase(q);
+        // Simple merge without duplicates
+        for (Lawyer l : byName) {
+            if (!bySpec.contains(l)) bySpec.add(l);
+        }
+        return bySpec;
+    }
     
     public Lawyer getLawyerById(UUID id) {
         return lawyerRepository.findById(id)
@@ -67,6 +80,7 @@ public class LawyerService {
         return lawyerRepository.save(lawyer);
     }
 }
+
 
 
 
