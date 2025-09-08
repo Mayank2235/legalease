@@ -54,6 +54,7 @@ public class AuthService {
         // Create profile based on role
         if (role == UserRole.LAWYER) {
             Lawyer lawyer = new Lawyer();
+            lawyer.setId(savedUser.getId());
             lawyer.setUser(savedUser);
             lawyer.setSpecialization("General Law");
             lawyer.setExperience("0 years");
@@ -62,6 +63,7 @@ public class AuthService {
             lawyerRepository.save(lawyer);
         } else if (role == UserRole.CLIENT) {
             Client client = new Client();
+            client.setId(savedUser.getId());
             client.setUser(savedUser);
             client.setPhone("Not provided");
             client.setAddress("Not provided");

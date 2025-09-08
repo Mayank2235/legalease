@@ -21,3 +21,7 @@ public interface ConsultationRepository extends JpaRepository<Consultation, UUID
 
 
 
+
+
+
+

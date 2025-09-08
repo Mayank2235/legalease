@@ -16,11 +16,11 @@ import java.util.UUID;
 public class Lawyer {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "id", nullable = false)
+    @MapsId
     private User user;
     
     @Column(nullable = false)

@@ -13,14 +13,14 @@ spring:
   sql:
     init:
       mode: never
-      # data-locations: classpath:data.sql
+      data-locations: classpath:data.sql
 
 jwt:
   secret: ${JWT_SECRET:your-super-secret-key-that-is-at-least-32-characters-long-for-security}
   expiration: ${JWT_EXPIRATION_MS:3600000}
 
 server:
-  port: ${SERVER_PORT:8081}
+  port: ${SERVER_PORT:8080}
 
 logging:
   level:
